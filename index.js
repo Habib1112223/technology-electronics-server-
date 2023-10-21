@@ -40,13 +40,43 @@ async function run() {
                   console.log(result)
             })
 
-
             app.get('/product', async (req, res) => {
                   const query = {};
                   const result = await productCollection.find(query).toArray();
                   res.send(result)
                   console.log(result)
             })
+
+            app.get('/product/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) };
+                  const result = await productCollection.findOne(query);
+                  res.send(result)
+                  console.log(result)
+            })
+
+            app.put('/product/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) };
+                  const updatedProduct = req.body;
+                  const product = {
+                        $set: {
+                              name: updatedProduct.name,
+                              image: updatedProduct.image,
+                              price: updatedProduct.price,
+                              description: updatedProduct.description,
+                              category: updatedProduct.category,
+                              rating: updatedProduct.rating
+                        }
+                  };
+
+                  console.log(updatedProduct)
+
+                  const result = await productCollection.updateOne(query, product);
+                  res.send(result);
+            })
+
+
 
             
 
