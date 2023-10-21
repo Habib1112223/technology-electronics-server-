@@ -31,7 +31,7 @@ async function run() {
 
 
             // Products
-            // start
+            
             app.post('/product', async (req, res) => {
                   const newProduct = req.body;
                   console.log(newProduct);
@@ -91,12 +91,24 @@ async function run() {
                   console.log(result)
             })
 
+            app.get('/category/:id', async (req, res) => {
+                  const query = req.params.id;
+                  if (query) {
+                        const category = { _id: new ObjectId(query) }
+                        const result = await categoriesCollection.findOne(category);
+                        res.send(result)
+                  } else {
+                        res.status(401).send('Category not found')
+                  }
+            })
 
-
-
-            
-
-            // end
+            app.post('/categories', async (req, res) => {
+                  const category = req.body;
+                  console.log(category)
+                  const result = await categoriesCollection.insertOne(category)
+                  res.send(result)
+            })
+      
 
             // Carts
             // app.get('/carts/user/:userId', async (req, res) => {
